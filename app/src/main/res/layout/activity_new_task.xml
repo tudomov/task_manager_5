@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_new_task"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="rtrk.pnrs1.ra38_2014.NewTaskActivity"
+    android:orientation="vertical">
+
+
+
+            <ScrollView
+                android:id="@+id/scrollId"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/layout_2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <EditText
+                        android:id="@+id/naslov"
+                        android:textAlignment="center"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/naslovText"/>
+
+                    <DatePicker
+                        android:id="@+id/datum"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:datePickerMode="spinner"
+                        android:calendarViewShown="false">
+                    </DatePicker>
+                    <TimePicker
+                        android:id="@+id/vrijeme"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:timePickerMode="spinner">
+                    </TimePicker>
+
+                    <EditText
+                        android:id="@+id/opis"
+                        android:inputType="text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/opisText"
+                        android:textAlignment="center"/>
+
+                    <LinearLayout
+                        android:id="@+id/layout_3"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                            <CheckBox
+                                android:id="@+id/podsjetnik"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content" />
+                            <TextView
+                                android:id="@+id/podsjetnik2"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/podsjetnikText"/>
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+                        
+                        <Button
+                            android:id="@+id/visok"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/crvena"/>
+                        <Button
+                            android:id="@+id/srednji"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/zuta"/>
+                        <Button
+                            android:id="@+id/nizak"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:background="@color/zelena"/>
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:id="@+id/layout_5"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal">
+
+                        <Button
+                            android:id="@+id/dodaj"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/dodajButton"/>
+                        <Button
+                            android:id="@+id/otkazi"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:text="@string/otkaziButton"/>
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+
+
+            </ScrollView>
+
+
+
+
+
+
+
+
+</RelativeLayout>

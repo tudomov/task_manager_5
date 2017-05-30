@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">Task Manager</string>
+    <string name="newTask">NOVI ZADATAK</string>
+    <string name="statisticButton">STATISTIKA</string>
+    <string name="imeZadatka">IME ZADATKA</string>
+    <string name="otkaziButton">OTKAŽI</string>
+    <string name="dodajButton">DODAJ</string>
+    <string name="naslovText">Unesi naslov</string>
+    <string name="podsjetnikText">Podsjeti me 15 minuta prije isteka..</string>
+    <string name="opisText">Opis zadatka</string>
+    <string name="datum">29.09.1995</string>
+    <string name="sacuvaj">SACUVAJ</string>
+    <string name="obrisi">OBRISI</string>
+    <string name="visokPrior">Visok prioritet</string>
+    <string name="srednjiPrior">Srednji prioritet</string>
+    <string name="nizakPrior">Nizak prioritet</string>
+
+
+
+</resources>

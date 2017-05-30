@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="horizontal" android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:longClickable="true">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="#4286f4">
+
+
+        <View
+            android:id="@+id/task_row_view"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="match_parent"
+            android:background="#FF0000">
+
+        </View>
+
+        <TextView
+            android:id="@+id/task_row_textview"
+            android:layout_width="0dp"
+            android:layout_weight="4"
+            android:layout_height="match_parent"
+            android:text="55:55:2017"
+            android:textSize="20dp"
+            android:gravity="center"/>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_weight="3"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/task_row_radiobutton"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:clickable="false"/>
+
+                <TextView
+                    android:id="@+id/task_row_textview2"
+                    android:layout_width="0dp"
+                    android:layout_weight="6"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="333-555"/>
+
+            </LinearLayout>
+
+
+
+
+            <CheckBox
+                android:id="@+id/task_row_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:layout_gravity="center_horizontal"
+                android:layout_weight="1"/>
+
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</LinearLayout>
