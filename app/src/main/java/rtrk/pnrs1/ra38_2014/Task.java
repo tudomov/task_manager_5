@@ -12,13 +12,26 @@ public class Task implements Serializable {
     public String mText2;
     public boolean mCheckBox;
     public boolean mRadioButton;
+    public String opis;
+    public int godina;
+    public int mjesec;
+    public int dan;
+    public int sat;
+    public int minut;
 
-    public Task(int mView, String mText1, String mText2, boolean mCheckBox, boolean mRadioButton) {
-        this.mView = mView;
+
+    public Task(int dan, int godina, boolean mCheckBox, int minut, int mjesec, boolean mRadioButton, String mText1, String mText2, int mView, String opis, int sat) {
+        this.dan = dan;
+        this.godina = godina;
+        this.mCheckBox = mCheckBox;
+        this.minut = minut;
+        this.mjesec = mjesec;
+        this.mRadioButton = mRadioButton;
         this.mText1 = mText1;
         this.mText2 = mText2;
-        this.mCheckBox = mCheckBox;
-        this.mRadioButton = mRadioButton;
+        this.mView = mView;
+        this.opis = opis;
+        this.sat = sat;
     }
 
     public int getmView() {
@@ -59,5 +72,53 @@ public class Task implements Serializable {
 
     public void setmRadioButton(boolean mRadioButton) {
         this.mRadioButton = mRadioButton;
+    }
+
+    public int getDan() {
+        return dan;
+    }
+
+    public void setDan(int dan) {
+        this.dan = dan;
+    }
+
+    public int getGodina() {
+        return godina;
+    }
+
+    public void setGodina(int godina) {
+        this.godina = godina;
+    }
+
+    public int getMinut() {
+        return minut;
+    }
+
+    public void setMinut(int minut) {
+        this.minut = minut;
+    }
+
+    public int getMjesec() {
+        return mjesec;
+    }
+
+    public void setMjesec(int mjesec) {
+        this.mjesec = mjesec;
+    }
+
+    public String getOpis() {
+        return opis;
+    }
+
+    public void setOpis(String opis) {
+        this.opis = opis;
+    }
+
+    public int getSat() {
+        return sat;
+    }
+
+    public void setSat(int sat) {
+        this.sat = sat;
     }
 }

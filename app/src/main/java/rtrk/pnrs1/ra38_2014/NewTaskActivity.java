@@ -33,7 +33,7 @@ public class NewTaskActivity extends AppCompatActivity {
     boolean podsjetnik;
     CheckBox remainder;
     final TaskAdapter adapter = MainActivity.getTaskAdapter();
-    Task task = new Task(0,"","",true,false);
+    Task task = new Task(0,0,true,0,0, false, "", "", 0,"",0);
     Calendar danas, taskDate;
     int dayToday, dayOfTask, dayOfWeek, year, taskYear;
     String Datum, nazivLijevogDugmeta, nazivDesnogDugmeta;
@@ -251,7 +251,13 @@ public class NewTaskActivity extends AppCompatActivity {
                 task.setmText1(nazivZadatka);
                 task.setmText2(Datum);
                 task.setmCheckBox(false);
+                task.setGodina(taskYear);
+                task.setDan(dayOfTask);
+                task.setMjesec(taskDate.get(Calendar.DAY_OF_YEAR));
+                task.setSat(vrijeme.getHour());
+                task.setMinut(vrijeme.getMinute());
                 task.setmRadioButton(podsjetnik);
+                task.setOpis(opis.getText().toString());
 
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result",task);

@@ -26,7 +26,10 @@ public class StatisticView extends View{
     float percentage2 = (float)0;
     float percentage3 = (float)0;
 
-    RectF rectNeki, rectNeki2, rectNeki3;
+    RectF rectNeki = new RectF();
+    RectF rectNeki2 = new RectF();
+    RectF rectNeki3 = new RectF();
+
 
     String string1, string2, string3;
 
