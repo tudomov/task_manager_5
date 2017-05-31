@@ -11,6 +11,8 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.io.Serializable;
+
 public class MainActivity extends AppCompatActivity {
 
     Button noviZadatakButton, statistikaButton;
@@ -70,8 +72,8 @@ public class MainActivity extends AppCompatActivity {
                Intent intent = new Intent(MainActivity.this, NewTaskActivity.class);
                intent.putExtra("zaLijevi", getText(R.string.sacuvaj));
                intent.putExtra("zaDesni", getText(R.string.obrisi));
-               pozisn = position;
-               intent.putExtra("listElement", position);
+                Task task = (Task) adapter.getItem(position);
+               intent.putExtra("update", (Serializable)task );
                startActivityForResult(intent, 2);
              //   Log.d("Sta god", "dugi klik");
               //  startActivity(intent);
@@ -88,8 +90,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         Task[] tasks = dbHelper.readTasks();
-        adapter.updateAdapter(items);
-
+        adapter.updateAdapter(tasks);
     }
 
     //   Intent intent = this.getIntent();

@@ -9,6 +9,7 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewDebug;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
@@ -32,6 +33,9 @@ public class NewTaskActivity extends AppCompatActivity {
     Calendar danas, taskDate;
     int dayToday, dayOfTask, dayOfWeek, year, taskYear;
     String Datum, nazivLijevogDugmeta, nazivDesnogDugmeta;
+    TaskDBHelper dbHelper;
+    int pozz;
+    Task taskk;
 
 
     @RequiresApi(api = Build.VERSION_CODES.N)
@@ -49,6 +53,9 @@ public class NewTaskActivity extends AppCompatActivity {
         datum = (DatePicker)findViewById(R.id.datum);
         vrijeme = (TimePicker)findViewById(R.id.vrijeme);
         remainder = (CheckBox) findViewById(R.id.podsjetnik);
+        dbHelper = new TaskDBHelper(this);
+
+
 
 
         datum.setMinDate(System.currentTimeMillis() -1000);
@@ -81,10 +88,31 @@ public class NewTaskActivity extends AppCompatActivity {
 
         nazivLijevogDugmeta = getIntent().getStringExtra("zaLijevi");
         nazivDesnogDugmeta = getIntent().getStringExtra("zaDesni");
-       // Log.d("imena su", nazivLijevogDugmeta);
+        //getIntent().getIntExtra("listElement", pozz);
+
+        Intent in = getIntent();
+        if (in.hasExtra("update")){
+
+            taskk = (Task) in.getSerializableExtra("update");
+            naslov.setText(taskk.getmText1());
+            opis.setText(taskk.getOpis());
+            remainder.setClickable(taskk.ismRadioButton());
+            datum.updateDate(taskk.getGodina(), taskk.getMjesec(), taskk.getDan());
+            vrijeme.setCurrentHour(taskk.getSat());
+            vrijeme.setCurrentMinute(taskk.getMinut());
+
+
+
+        }
+
+        //Log.d("povucen element", ""+pozz);
        // Log.d("imena su", nazivDesnogDugmeta);
         dodaj.setText(nazivLijevogDugmeta);
         otkazi.setText(nazivDesnogDugmeta);
+
+        int pozz;
+
+
 
 
         crveni.setOnClickListener(new View.OnClickListener() {
@@ -254,10 +282,17 @@ public class NewTaskActivity extends AppCompatActivity {
                 task.setmRadioButton(podsjetnik);
                 task.setOpis(opis.getText().toString());
 
+                Task taskk = new Task(dayOfTask, taskYear, false, vrijeme.getCurrentMinute(), taskDate.get(Calendar.MONTH), podsjetnik, nazivZadatka, Datum, prioritet, opis.getText().toString(),vrijeme.getCurrentHour());
+
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("result",task);
                 setResult(NewTaskActivity.RESULT_OK, returnIntent);
                 finish();
+
+                dbHelper.addTask(taskk);
+                Task[] tasks = dbHelper.readTasks();
+                TaskAdapter adapter = MainActivity.getTaskAdapter();
+                adapter.updateAdapter(tasks);
 
 
 
