@@ -3,22 +3,19 @@ package rtrk.pnrs1.ra38_2014;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.res.Configuration;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.text.StaticLayout;
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import static android.R.attr.data;
-
 public class MainActivity extends AppCompatActivity {
 
     Button noviZadatakButton, statistikaButton;
     public static TaskAdapter adapter;
+    public TaskDBHelper dbHelper;
     int pozisn;
     int LIST_LONG_PRESS = 2;
     int ADD_TASK_CLICK = 1;
@@ -65,6 +62,7 @@ public class MainActivity extends AppCompatActivity {
 
         adapter = new TaskAdapter(this);
         ListView list = (ListView) findViewById(R.id.list);
+        dbHelper = new TaskDBHelper(this);
 
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
@@ -86,8 +84,15 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Task[] tasks = dbHelper.readTasks();
+        adapter.updateAdapter(items);
 
-     //   Intent intent = this.getIntent();
+    }
+
+    //   Intent intent = this.getIntent();
 
         // intent.getIntExtra("prioritet",prioritet);
       //   text1 = intent.getStringExtra("nazivZadatka");

@@ -3,7 +3,6 @@ package rtrk.pnrs1.ra38_2014;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -62,7 +61,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
                 TASK_ID + " INTEGER PRIMARY KEY ); " );
     }
 
-    }
+
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {

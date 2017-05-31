@@ -1,14 +1,10 @@
 package rtrk.pnrs1.ra38_2014;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.Paint;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
@@ -54,6 +50,17 @@ public class TaskAdapter extends BaseAdapter {
 
         return rv;
     }
+
+    public void updateAdapter(Task[] items) {
+        mTasks.clear();
+              if (items != null) {
+            for (Task item:items) {
+                mTasks.add(item);
+                          }
+                  }
+        notifyDataSetChanged();
+           }
+
 
     @Override
     public long getItemId(int position) {

@@ -1,12 +1,10 @@
 package rtrk.pnrs1.ra38_2014;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.icu.text.SimpleDateFormat;
 import android.os.Build;
+import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -18,9 +16,6 @@ import android.widget.EditText;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
-
-import static rtrk.pnrs1.ra38_2014.MainActivity.adapter;
-import static rtrk.pnrs1.ra38_2014.R.id.datum;
 
 public class NewTaskActivity extends AppCompatActivity {
 
@@ -254,8 +249,8 @@ public class NewTaskActivity extends AppCompatActivity {
                 task.setGodina(taskYear);
                 task.setDan(dayOfTask);
                 task.setMjesec(taskDate.get(Calendar.DAY_OF_YEAR));
-                task.setSat(vrijeme.getHour());
-                task.setMinut(vrijeme.getMinute());
+                task.setSat(vrijeme.getCurrentHour());
+                task.setMinut(vrijeme.getCurrentMinute());
                 task.setmRadioButton(podsjetnik);
                 task.setOpis(opis.getText().toString());
 
