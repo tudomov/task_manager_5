@@ -72,8 +72,7 @@ public class MainActivity extends AppCompatActivity {
                Intent intent = new Intent(MainActivity.this, NewTaskActivity.class);
                intent.putExtra("zaLijevi", getText(R.string.sacuvaj));
                intent.putExtra("zaDesni", getText(R.string.obrisi));
-                Task task = (Task) adapter.getItem(position);
-               intent.putExtra("update", (Serializable)task );
+               intent.putExtra("update", position );
                startActivityForResult(intent, 2);
              //   Log.d("Sta god", "dugi klik");
               //  startActivity(intent);

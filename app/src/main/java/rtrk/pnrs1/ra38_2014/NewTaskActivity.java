@@ -38,6 +38,7 @@ public class NewTaskActivity extends AppCompatActivity {
     Task taskk;
 
 
+
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +55,7 @@ public class NewTaskActivity extends AppCompatActivity {
         vrijeme = (TimePicker)findViewById(R.id.vrijeme);
         remainder = (CheckBox) findViewById(R.id.podsjetnik);
         dbHelper = new TaskDBHelper(this);
+
 
 
 
@@ -89,18 +91,44 @@ public class NewTaskActivity extends AppCompatActivity {
         nazivLijevogDugmeta = getIntent().getStringExtra("zaLijevi");
         nazivDesnogDugmeta = getIntent().getStringExtra("zaDesni");
         //getIntent().getIntExtra("listElement", pozz);
-
+        pozz = getIntent().getIntExtra("update", -1);
         Intent in = getIntent();
-        if (in.hasExtra("update")){
+        dodaj.setEnabled(false);
+        if (pozz != -1){
 
-            taskk = (Task) in.getSerializableExtra("update");
+            taskk = dbHelper.readTask(pozz);
+
+
             naslov.setText(taskk.getmText1());
             opis.setText(taskk.getOpis());
-            remainder.setClickable(taskk.ismRadioButton());
+            remainder.setChecked(taskk.ismRadioButton());
             datum.updateDate(taskk.getGodina(), taskk.getMjesec(), taskk.getDan());
             vrijeme.setCurrentHour(taskk.getSat());
             vrijeme.setCurrentMinute(taskk.getMinut());
+            if(taskk.getmView() == 1){
+                crveni.setEnabled(false);
+                zuti.setEnabled(true);
+                zeleni.setEnabled(true);
+                zuti.setBackgroundResource(R.color.zuta);
+                zeleni.setBackgroundResource(R.color.zelena);
+                crveni.setBackgroundResource(R.color.tamnoCrvena);
 
+            }else if(taskk.getmView() == 2){
+                crveni.setEnabled(true);
+                zuti.setEnabled(false);
+                zeleni.setEnabled(true);
+                zuti.setBackgroundResource(R.color.tamnoZuta);
+                zeleni.setBackgroundResource(R.color.zelena);
+                crveni.setBackgroundResource(R.color.crvena);
+            }else if(taskk.getmView() == 3){
+                crveni.setEnabled(true);
+                zuti.setEnabled(true);
+                zeleni.setEnabled(false);
+                zuti.setBackgroundResource(R.color.zuta);
+                zeleni.setBackgroundResource(R.color.tamnoZelena);
+                crveni.setBackgroundResource(R.color.crvena);
+            }
+            dodaj.setEnabled(true);
 
 
         }
@@ -110,7 +138,7 @@ public class NewTaskActivity extends AppCompatActivity {
         dodaj.setText(nazivLijevogDugmeta);
         otkazi.setText(nazivDesnogDugmeta);
 
-        int pozz;
+
 
 
 
@@ -177,6 +205,11 @@ public class NewTaskActivity extends AppCompatActivity {
         otkazi.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                dbHelper.removeTask(pozz);
+                Task[] tasks = dbHelper.readTasks();
+                TaskAdapter adapter = MainActivity.getTaskAdapter();
+                adapter.updateAdapter(tasks);
+
                 Intent intent = new Intent(NewTaskActivity.this, MainActivity.class);
                 startActivity(intent);
             }
@@ -289,7 +322,13 @@ public class NewTaskActivity extends AppCompatActivity {
                 setResult(NewTaskActivity.RESULT_OK, returnIntent);
                 finish();
 
-                dbHelper.addTask(taskk);
+                if(pozz != -1){
+                    dbHelper.updateTask(taskk, pozz);
+                }else{
+                    dbHelper.addTask(task);
+                }
+
+
                 Task[] tasks = dbHelper.readTasks();
                 TaskAdapter adapter = MainActivity.getTaskAdapter();
                 adapter.updateAdapter(tasks);
@@ -348,7 +387,7 @@ public class NewTaskActivity extends AppCompatActivity {
 
 
 
-        dodaj.setEnabled(false);
+
 
     }
 

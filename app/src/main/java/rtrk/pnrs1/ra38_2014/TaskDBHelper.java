@@ -79,7 +79,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         cv.put(DATE_HOUR, t.getSat());
         cv.put(DATE_MINUTE, t.getMinut());
 
-        cv.put(TASK_DESCRIPTION, t.getmText2());
+        cv.put(TASK_DESCRIPTION, t.getOpis());
         cv.put(PRIORITY,t.getmView());
 
         if (t.ismRadioButton()) {
@@ -111,7 +111,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         cv.put(DATE_DAY, t.getDan());
         cv.put(DATE_HOUR, t.getSat());
         cv.put(DATE_MINUTE, t.getMinut());
-        cv.put(TASK_DESCRIPTION, t.getmText2());
+        cv.put(TASK_DESCRIPTION, t.getOpis());
         cv.put(PRIORITY,t.getmView());
         if (t.ismRadioButton()) {
             cv.put(NOTIFICATION, 1);
