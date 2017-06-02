@@ -5,7 +5,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.v4.content.ContextCompat;
 import android.view.View;
 
 /**
@@ -30,12 +29,57 @@ public class StatisticView extends View{
     RectF rectNeki2 = new RectF();
     RectF rectNeki3 = new RectF();
 
+    int brojCrvenih, brojZavrsenihCrvenih, brojZutih, brojZavrsenihZutih, brojZelenih, brojZavrsenihZelenih;
+
 
     String string1, string2, string3;
+
+    protected TaskDBHelper dbHelper;
+    protected Task[] items;
 
 
     public StatisticView(Context context) {
         super(context);
+
+        brojCrvenih = 0;
+        brojZavrsenihCrvenih = 0;
+        brojZelenih = 0;
+        brojZavrsenihZelenih = 0;
+        brojZutih = 0;
+        brojZavrsenihZutih = 0;
+        red = 0;
+        green = 0;
+        yellow = 0;
+        percentage=0;
+        percentage2 = 0;
+        percentage3 = 0;
+
+        dbHelper = new TaskDBHelper(context);
+        items = dbHelper.readTasks();
+
+        if(items != null){
+            for(Task item : items){
+                if(item.getmView() == 1){
+                    brojCrvenih++;
+                    if(item.ismCheckBox() == true){
+                        brojZavrsenihCrvenih++;
+                    }
+                }else if(item.getmView() == 2){
+                    brojZutih++;
+                    if(item.ismCheckBox() == true){
+                        brojZavrsenihZutih++;
+                    }
+                }else if(item.getmView() == 3){
+                    brojZelenih++;
+                    if(item.ismCheckBox() == true){
+                        brojZavrsenihZelenih++;
+                    }
+                }
+            }
+
+        }
+
+
     }
 
 
@@ -56,9 +100,21 @@ public class StatisticView extends View{
         canvas.drawText(getResources().getString(R.string.srednjiPrior),canvas.getWidth()/4, canvas.getHeight()*2/3 + 280, p);
         canvas.drawText(getResources().getString(R.string.nizakPrior),canvas.getWidth()*3/4, canvas.getHeight()*2/3 + 280, p);
 
-        red = 20;
-        green = 100;
-        yellow = 55;
+        if(brojZavrsenihCrvenih > 0) {
+            red = (brojZavrsenihCrvenih * 100) / brojCrvenih;
+        }else{
+            red = 0;
+        }
+        if(brojZavrsenihZelenih > 0) {
+            green = (brojZavrsenihZelenih * 100) / brojZelenih;
+        }else{
+            green = 0;
+        }
+        if(brojZavrsenihZutih > 0) {
+            yellow = (brojZavrsenihZutih * 100) / brojZutih;
+        }else{
+            yellow = 0;
+        }
 
         isjecak.setColor(getResources().getColor(R.color.crvena));
         isjecak2.setColor(getResources().getColor(R.color.zuta));
@@ -72,7 +128,9 @@ public class StatisticView extends View{
         canvas.drawArc(rectNeki2, -90, (float)3.6*percentage2, true, isjecak2);
         canvas.drawArc(rectNeki3, -90, (float)3.6*percentage3, true, isjecak3);
 
-
+        string1 = Float.toString(this.percentage);
+        string2 = Float.toString(this.percentage2);
+        string3 = Float.toString(this.percentage3);
         canvas.drawText(string1+"%",canvas.getWidth()/2, canvas.getHeight()/4 + 20, p);
         canvas.drawText(string2+"%",canvas.getWidth()/4, canvas.getHeight()*2/3 + 20, p);
         canvas.drawText(string3+"%",canvas.getWidth()*3/4, canvas.getHeight()*2/3 + 20, p);

@@ -27,6 +27,7 @@ public class NewTaskActivity extends AppCompatActivity {
     String date, nazivZadatka;
     boolean podsjetnik;
     CheckBox remainder;
+    boolean doneTask;
     final TaskAdapter adapter = MainActivity.getTaskAdapter();
     Task task = new Task(0,0,true,0,0, false, "", "", 0,"",0);
     Calendar danas, taskDate;
@@ -101,6 +102,7 @@ public class NewTaskActivity extends AppCompatActivity {
             naslov.setText(taskk.getmText1());
             opis.setText(taskk.getOpis());
             remainder.setChecked(taskk.ismRadioButton());
+            doneTask = taskk.ismCheckBox();
             datum.updateDate(taskk.getGodina(), taskk.getMjesec(), taskk.getDan());
             vrijeme.setCurrentHour(taskk.getSat());
             vrijeme.setCurrentMinute(taskk.getMinut());
@@ -314,7 +316,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 task.setmView(prioritet);
                 task.setmText1(nazivZadatka);
                 task.setmText2(Datum);
-                task.setmCheckBox(false);
+                task.setmCheckBox(doneTask);
                 task.setGodina(yearOfTask);
                 task.setDan(dayOfMonth);
                 task.setMjesec(monthOfTask);

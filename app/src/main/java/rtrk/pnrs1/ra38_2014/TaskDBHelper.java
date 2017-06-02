@@ -131,6 +131,34 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateTaskViaName(String name, Task t) {
+        SQLiteDatabase db = getWritableDatabase();
+        ContentValues cv = new ContentValues();
+
+
+        cv.put(TASK_NAME, t.getmText1());
+        cv.put(DATE, t.getmText2());
+        cv.put(DATE_YEAR, t.getGodina());
+        cv.put(DATE_MONTH, t.getMjesec());
+        cv.put(DATE_DAY, t.getDan());
+        cv.put(DATE_HOUR, t.getSat());
+        cv.put(DATE_MINUTE, t.getMinut());
+        cv.put(TASK_DESCRIPTION, t.getOpis());
+        cv.put(PRIORITY,t.getmView());
+        if (t.ismRadioButton()) {
+            cv.put(NOTIFICATION, 1);
+        }else
+            cv.put(NOTIFICATION, 0);
+
+        if (t.ismCheckBox()) {
+            cv.put(CHECKED, 1);
+        }else
+            cv.put(CHECKED, 0);
+
+        db.update(TABLE_NAME,cv,TASK_NAME+"=?",new String[]{name});
+        close();
+    }
+
     public void removeTask(int koga_brisem){
         SQLiteDatabase db = getWritableDatabase();
         db.delete(TABLE_NAME,TASK_ID + "=?", new String[] {String.valueOf(koga_brisem+1)});

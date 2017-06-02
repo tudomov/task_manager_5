@@ -21,10 +21,12 @@ public class TaskAdapter extends BaseAdapter {
 
     private Context mContext;
     private ArrayList<Task> mTasks;
+    private TaskDBHelper dbHelper;
 
     public TaskAdapter(Context context) {
         mContext = context;
         mTasks = new ArrayList<Task>();
+        dbHelper = new TaskDBHelper(context);
     }
 
     public void addTask(Task task){
@@ -100,16 +102,29 @@ public class TaskAdapter extends BaseAdapter {
         holder.textview2.setText(task.mText2);
 
         holder.mRadioButton.setChecked(task.mRadioButton);
-        holder.mCheckBox.setChecked(false);
+        holder.mCheckBox.setChecked(task.mCheckBox);
         holder.mCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if(isChecked) {
-                    task.mCheckBox = true;
+                    task.mCheckBox=true;
+                    //Task item = new Task(task.getDan(), task.getGodina(), true, task.getMinut(), task.getMjesec(), task.ismRadioButton(), task.getmText1(), task.getmText2(), task.getmView(), task.getOpis(), task.getSat());
+                    //Task itemm = new Task(28, 2017, true, 57, 7, true, "Radenko", "29.09.1992.", 1, "Petar", 2);
+                    dbHelper.updateTaskViaName(task.getmText1(), task);
+                    Task[] items = dbHelper.readTasks();
+                    TaskAdapter adapter = MainActivity.getTaskAdapter();
+                    adapter.updateAdapter(items);
 
                     holder.textview.setPaintFlags(holder.textview.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                 }else {
                     task.mCheckBox = false;
+                    //Task item = new Task(task.getDan(), task.getGodina(), false, task.getMinut(), task.getMjesec(), task.ismRadioButton(), task.getmText1(), task.getmText2(), task.getmView(), task.getOpis(), task.getSat());
+                    dbHelper.updateTaskViaName(task.getmText1(), task);
+                    Task[] items = dbHelper.readTasks();
+                    TaskAdapter adapter = MainActivity.getTaskAdapter();
+                    adapter.updateAdapter(items);
+
+
                     holder.textview.setPaintFlags(0);
                 }
             }
