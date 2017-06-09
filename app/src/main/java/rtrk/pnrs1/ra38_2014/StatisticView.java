@@ -18,7 +18,7 @@ public class StatisticView extends View{
     Paint isjecak2 = new Paint();
     Paint isjecak3 = new Paint();
 
-    int red, green, yellow;
+    float red, green, yellow;
     boolean flag = true;
 
     float percentage = (float)0;
@@ -28,6 +28,8 @@ public class StatisticView extends View{
     RectF rectNeki = new RectF();
     RectF rectNeki2 = new RectF();
     RectF rectNeki3 = new RectF();
+
+    CalculateNative calc;
 
     int brojCrvenih, brojZavrsenihCrvenih, brojZutih, brojZavrsenihZutih, brojZelenih, brojZavrsenihZelenih;
 
@@ -53,6 +55,8 @@ public class StatisticView extends View{
         percentage=0;
         percentage2 = 0;
         percentage3 = 0;
+
+
 
         dbHelper = new TaskDBHelper(context);
         items = dbHelper.readTasks();
@@ -93,6 +97,8 @@ public class StatisticView extends View{
         canvas.drawCircle(canvas.getWidth()*3/4, canvas.getHeight()*2/3, 200, p);
 
 
+        calc = new CalculateNative();
+
         p.setColor(Color.BLACK);
         p.setTextAlign(Paint.Align.CENTER);
         p.setTextSize(65);
@@ -101,20 +107,25 @@ public class StatisticView extends View{
         canvas.drawText(getResources().getString(R.string.nizakPrior),canvas.getWidth()*3/4, canvas.getHeight()*2/3 + 280, p);
 
         if(brojZavrsenihCrvenih > 0) {
-            red = (brojZavrsenihCrvenih * 100) / brojCrvenih;
+            red =  calc.getPercentage(brojZavrsenihCrvenih, brojCrvenih);
+            //red = (brojZavrsenihCrvenih * 100) / brojCrvenih;
         }else{
             red = 0;
         }
         if(brojZavrsenihZelenih > 0) {
-            green = (brojZavrsenihZelenih * 100) / brojZelenih;
+            green =  calc.getPercentage(brojZavrsenihZelenih, brojZelenih);
+            //green = (brojZavrsenihZelenih * 100) / brojZelenih;
         }else{
             green = 0;
         }
         if(brojZavrsenihZutih > 0) {
-            yellow = (brojZavrsenihZutih * 100) / brojZutih;
+            yellow =  calc.getPercentage(brojZavrsenihZutih, brojZutih);
+            //yellow = (brojZavrsenihZutih * 100) / brojZutih;
         }else{
             yellow = 0;
         }
+
+
 
         isjecak.setColor(getResources().getColor(R.color.crvena));
         isjecak2.setColor(getResources().getColor(R.color.zuta));
