@@ -5,6 +5,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 /**
  * Created by student on 30.5.2017.
@@ -58,7 +59,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
                 DATE_DAY + " INTEGER, " +
                 DATE_HOUR + " INTEGER, " +
                 DATE_MINUTE + " INTEGER, " +
-                TASK_ID + " INTEGER PRIMARY KEY ); " );
+                TASK_ID + " INTEGER ); " );
     }
 
 
@@ -81,6 +82,8 @@ public class TaskDBHelper extends SQLiteOpenHelper {
 
         cv.put(TASK_DESCRIPTION, t.getOpis());
         cv.put(PRIORITY,t.getmView());
+        Log.d("DodaliIdFUCKING", ""+(t.getTaskId()));
+        cv.put(TASK_ID, t.getTaskId());
 
         if (t.ismRadioButton()) {
             cv.put(NOTIFICATION, 1);
@@ -113,6 +116,8 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         cv.put(DATE_MINUTE, t.getMinut());
         cv.put(TASK_DESCRIPTION, t.getOpis());
         cv.put(PRIORITY,t.getmView());
+        cv.put(TASK_ID, t.getTaskId());
+        Log.d("APDEJTUJEM FUCKING", ""+t.getTaskId());
         if (t.ismRadioButton()) {
             cv.put(NOTIFICATION, 1);
         }else
@@ -127,7 +132,38 @@ public class TaskDBHelper extends SQLiteOpenHelper {
 
 
         SQLiteDatabase db = getWritableDatabase();
-        db.update(TABLE_NAME,cv,TASK_ID + "=?", new String[] {String.valueOf(id_taska+1)});
+        db.update(TABLE_NAME,cv,TASK_ID + "=?", new String[] {String.valueOf(t.getTaskId())});
+        db.close();
+    }
+    public void updateTask2(Task t, int id_taska){
+        ContentValues cv = new ContentValues();
+
+        cv.put(TASK_NAME, t.getmText1());
+        cv.put(DATE, t.getmText2());
+        cv.put(DATE_YEAR, t.getGodina());
+        cv.put(DATE_MONTH, t.getMjesec());
+        cv.put(DATE_DAY, t.getDan());
+        cv.put(DATE_HOUR, t.getSat());
+        cv.put(DATE_MINUTE, t.getMinut());
+        cv.put(TASK_DESCRIPTION, t.getOpis());
+        cv.put(PRIORITY,t.getmView());
+        cv.put(TASK_ID, id_taska);
+        Log.d("APDEJTUJEM FUCKING", ""+t.getTaskId());
+        if (t.ismRadioButton()) {
+            cv.put(NOTIFICATION, 1);
+        }else
+            cv.put(NOTIFICATION, 0);
+
+        if (t.ismCheckBox()) {
+            cv.put(CHECKED, 1);
+        }else
+            cv.put(CHECKED, 0);
+
+
+
+
+        SQLiteDatabase db = getWritableDatabase();
+        db.update(TABLE_NAME,cv,TASK_ID + "=?", new String[] {String.valueOf(t.getTaskId())});
         db.close();
     }
 
@@ -161,14 +197,14 @@ public class TaskDBHelper extends SQLiteOpenHelper {
 
     public void removeTask(int koga_brisem){
         SQLiteDatabase db = getWritableDatabase();
-        db.delete(TABLE_NAME,TASK_ID + "=?", new String[] {String.valueOf(koga_brisem+1)});
+        db.delete(TABLE_NAME,TASK_ID + "=?", new String[] {String.valueOf(koga_brisem)});
         db.close();
     }
 
     public Task readTask(int id){
         SQLiteDatabase db = getReadableDatabase();
         Cursor cursor = db.query(TABLE_NAME,null,TASK_ID + "=?",
-                new String[] {String.valueOf(id+1)},null,null,null);
+                new String[] {String.valueOf(id)},null,null,null);
         cursor.moveToFirst();
         Task task = createTask(cursor);
         close();
@@ -193,6 +229,24 @@ public class TaskDBHelper extends SQLiteOpenHelper {
 
     }
 
+    public Task[] updateTasks(){
+        SQLiteDatabase db = getReadableDatabase();
+        Cursor cursor = db.query(TABLE_NAME, null, null, null, null, null, null, null);
+
+        if (cursor.getCount() <= 0){
+            return null;
+        }
+        Task[] tasks = new Task[cursor.getCount()];
+        int i = 0;
+        for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
+            tasks[i++] = createTask(cursor);
+            updateTask2(tasks[i-1], i-1 );
+        }
+        close();
+        return tasks;
+
+    }
+
     private Task createTask(Cursor cursor){
         String name = cursor.getString(cursor.getColumnIndex(TASK_NAME));
         int godina = cursor.getInt(cursor.getColumnIndex(DATE_YEAR));
@@ -205,6 +259,8 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         String desq = cursor.getString(cursor.getColumnIndex(TASK_DESCRIPTION));
         int priority = cursor.getInt(cursor.getColumnIndex(PRIORITY));
         int reminder_i = cursor.getInt(cursor.getColumnIndex(NOTIFICATION));
+        int id = cursor.getInt(cursor.getColumnIndex(TASK_ID));
+
         boolean reminder;
         if (reminder_i == 1)
             reminder=true;
@@ -218,7 +274,7 @@ public class TaskDBHelper extends SQLiteOpenHelper {
             checked=true;
         else
             checked = false;
-        return new Task(dan,godina,checked,minut,mjesec, reminder, name, data, priority, desq, sat);
+        return new Task(dan,godina,checked,minut,mjesec, reminder, name, data, priority, desq, sat, id);
 
     }
 }

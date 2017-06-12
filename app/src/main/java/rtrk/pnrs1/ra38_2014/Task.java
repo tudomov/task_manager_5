@@ -18,9 +18,10 @@ public class Task implements Serializable {
     public int dan;
     public int sat;
     public int minut;
+    public int taskId;
 
 
-    public Task(int dan, int godina, boolean mCheckBox, int minut, int mjesec, boolean mRadioButton, String mText1, String mText2, int mView, String opis, int sat) {
+    public Task(int dan, int godina, boolean mCheckBox, int minut, int mjesec, boolean mRadioButton, String mText1, String mText2, int mView, String opis, int sat, int taskId) {
         this.dan = dan;
         this.godina = godina;
         this.mCheckBox = mCheckBox;
@@ -32,6 +33,7 @@ public class Task implements Serializable {
         this.mView = mView;
         this.opis = opis;
         this.sat = sat;
+        this.taskId = taskId;
     }
 
     public int getmView() {
@@ -120,5 +122,13 @@ public class Task implements Serializable {
 
     public void setSat(int sat) {
         this.sat = sat;
+    }
+
+    public int getTaskId() {
+        return taskId;
+    }
+
+    public void setTaskId(int taskId) {
+        this.taskId = taskId;
     }
 }

@@ -29,13 +29,13 @@ public class NewTaskActivity extends AppCompatActivity {
     CheckBox remainder;
     boolean doneTask;
     final TaskAdapter adapter = MainActivity.getTaskAdapter();
-    Task task = new Task(0,0,true,0,0, false, "", "", 0,"",0);
+    Task task = new Task(0,0,true,0,0, false, "", "", 0,"",0,0);
     Calendar danas, taskDate;
     int dayToday, dayOfTask, dayOfWeek, year, taskYear, monthOfTask, dayOfMonth, yearOfTask;
     String Datum, nazivLijevogDugmeta, nazivDesnogDugmeta;
     TaskDBHelper dbHelper;
-    int pozz;
-    Task taskk;
+    int pozz = -1;
+    Task taskk, item;
 
 
 
@@ -91,13 +91,27 @@ public class NewTaskActivity extends AppCompatActivity {
         nazivLijevogDugmeta = getIntent().getStringExtra("zaLijevi");
         nazivDesnogDugmeta = getIntent().getStringExtra("zaDesni");
         //getIntent().getIntExtra("listElement", pozz);
-        pozz = getIntent().getIntExtra("update", -1);
+        //pozz = getIntent().getIntExtra("update", -1);
         Intent in = getIntent();
+        if (in.hasExtra("result")) {
+            item = (Task)in.getSerializableExtra("result");
+            Log.d("Dobili", item.getmText1());
+            Log.d("DobiliId", ""+item.getTaskId());
+            pozz = item.getTaskId();
+        }else{
+            //pozz = -1;
+        }
+
+
+        Log.d("OnClick", ""+pozz);
+
+
         dodaj.setEnabled(false);
         if (pozz != -1){
 
             taskk = dbHelper.readTask(pozz);
-
+            Log.d("OnClick", ""+pozz);
+            Log.d("Debilsi", ""+taskk.getmText1());
 
             naslov.setText(taskk.getmText1());
             opis.setText(taskk.getOpis());
@@ -133,6 +147,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 prioritet = 3;
             }
             dodaj.setEnabled(true);
+
 
 
         }
@@ -210,7 +225,8 @@ public class NewTaskActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbHelper.removeTask(pozz);
-                Task[] tasks = dbHelper.readTasks();
+
+                Task[] tasks = dbHelper.updateTasks();
                 TaskAdapter adapter = MainActivity.getTaskAdapter();
                 adapter.updateAdapter(tasks);
 
@@ -311,6 +327,21 @@ public class NewTaskActivity extends AppCompatActivity {
                 }else{
                     Datum = Integer.toString(datum.getDayOfMonth()) + "." + Integer.toString(datum.getMonth() + 1) + "." + Integer.toString(datum.getYear());
                 }
+                Log.d("JelOvde","PUCA11");
+
+                int rr = 0;
+
+                if(dbHelper.readTasks() != null) {
+                    Task[] taskss = dbHelper.readTasks();
+
+                        for (Task itemm : taskss) {
+                            ++rr;
+
+                        }
+                }
+                Log.d("JelOvde","PUCA");
+
+
 
 
                 task.setmView(prioritet);
@@ -325,6 +356,13 @@ public class NewTaskActivity extends AppCompatActivity {
                 task.setmRadioButton(podsjetnik);
                 task.setOpis(opis.getText().toString());
 
+                if(pozz != -1) {
+                    task.setTaskId(item.getTaskId());
+                }else{
+                    task.setTaskId(rr);
+                }
+                Log.d("DodaliId", ""+(rr));
+
                 //Task taskk = new Task(dayOfTask, taskYear, false, vrijeme.getCurrentMinute(), taskDate.get(Calendar.MONTH), podsjetnik, nazivZadatka, Datum, prioritet, opis.getText().toString(),vrijeme.getCurrentHour());
 
                 Intent returnIntent = new Intent();
@@ -333,7 +371,7 @@ public class NewTaskActivity extends AppCompatActivity {
                 finish();
 
                 if(pozz != -1){
-                    dbHelper.updateTask(task, pozz);
+                    dbHelper.updateTask(task, task.getTaskId());
                 }else{
                     dbHelper.addTask(task);
                 }

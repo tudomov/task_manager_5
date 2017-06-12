@@ -45,7 +45,12 @@ public class TaskAdapter extends BaseAdapter {
     public Object getItem(int position) {
         Object rv = null;
         try {
-            rv = mTasks.get(position);
+            if(mTasks != null){
+                for(Task taskk:mTasks) {
+                    if(position == taskk.getTaskId())
+                        rv = taskk;
+                }
+            }
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
         }
@@ -110,7 +115,7 @@ public class TaskAdapter extends BaseAdapter {
                     task.mCheckBox=true;
                     //Task item = new Task(task.getDan(), task.getGodina(), true, task.getMinut(), task.getMjesec(), task.ismRadioButton(), task.getmText1(), task.getmText2(), task.getmView(), task.getOpis(), task.getSat());
                     //Task itemm = new Task(28, 2017, true, 57, 7, true, "Radenko", "29.09.1992.", 1, "Petar", 2);
-                    dbHelper.updateTaskViaName(task.getmText1(), task);
+                    dbHelper.updateTask(task, task.getTaskId());
                     Task[] items = dbHelper.readTasks();
                     TaskAdapter adapter = MainActivity.getTaskAdapter();
                     adapter.updateAdapter(items);
@@ -119,7 +124,7 @@ public class TaskAdapter extends BaseAdapter {
                 }else {
                     task.mCheckBox = false;
                     //Task item = new Task(task.getDan(), task.getGodina(), false, task.getMinut(), task.getMjesec(), task.ismRadioButton(), task.getmText1(), task.getmText2(), task.getmView(), task.getOpis(), task.getSat());
-                    dbHelper.updateTaskViaName(task.getmText1(), task);
+                    dbHelper.updateTask(task, task.getTaskId());
                     Task[] items = dbHelper.readTasks();
                     TaskAdapter adapter = MainActivity.getTaskAdapter();
                     adapter.updateAdapter(items);
