@@ -240,7 +240,8 @@ public class TaskDBHelper extends SQLiteOpenHelper {
         int i = 0;
         for (cursor.moveToFirst(); !cursor.isAfterLast(); cursor.moveToNext()){
             tasks[i++] = createTask(cursor);
-            updateTask2(tasks[i-1], i-1 );
+            updateTask2(tasks[i-1], i-
+                    1 );
         }
         close();
         return tasks;
