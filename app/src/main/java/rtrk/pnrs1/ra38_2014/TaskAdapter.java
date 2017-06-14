@@ -58,6 +58,10 @@ public class TaskAdapter extends BaseAdapter {
         return rv;
     }
 
+    public ArrayList<Task> getTaskList(){
+                return mTasks;
+            }
+
     public void updateAdapter(Task[] items) {
         mTasks.clear();
               if (items != null) {

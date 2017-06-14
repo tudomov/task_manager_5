@@ -1,20 +1,24 @@
 package rtrk.pnrs1.ra38_2014;
 
-import android.app.Activity;
-import android.content.Intent;
-import android.content.res.Configuration;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.ListView;
-import android.widget.Toast;
+        import android.app.Activity;
+        import android.content.ComponentName;
+        import android.content.Intent;
+        import android.content.ServiceConnection;
+        import android.content.res.Configuration;
+        import android.os.Bundle;
+        import android.os.IBinder;
+        import android.os.RemoteException;
+        import android.support.v7.app.AppCompatActivity;
+        import android.util.Log;
+        import android.view.View;
+        import android.widget.AdapterView;
+        import android.widget.Button;
+        import android.widget.ListView;
+        import android.widget.Toast;
 
-import java.io.Serializable;
+        import java.io.Serializable;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ServiceConnection {
 
     Button noviZadatakButton, statistikaButton;
     public static TaskAdapter adapter;
@@ -23,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
     int LIST_LONG_PRESS = 2;
     int ADD_TASK_CLICK = 1;
 
+    private AidlInterface mBinderInterface;
 
 
 
@@ -32,6 +37,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Intent serviceIntent = new Intent(this, NotificationService.class);
+        bindService(serviceIntent, this , BIND_AUTO_CREATE);
 
 
         noviZadatakButton = (Button)findViewById(R.id.novi_zadatak_button);
@@ -43,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(MainActivity.this, NewTaskActivity.class);
                 intent.putExtra("zaLijevi", getText(R.string.dodajButton));
                 intent.putExtra("zaDesni", getText(R.string.otkaziButton));
-                    startActivityForResult(intent, 1);
+                startActivityForResult(intent, 1);
             }
         });
 
@@ -70,16 +77,16 @@ public class MainActivity extends AppCompatActivity {
         list.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-               Intent intent = new Intent(MainActivity.this, NewTaskActivity.class);
-               intent.putExtra("zaLijevi", getText(R.string.sacuvaj));
-               intent.putExtra("zaDesni", getText(R.string.obrisi));
+                Intent intent = new Intent(MainActivity.this, NewTaskActivity.class);
+                intent.putExtra("zaLijevi", getText(R.string.sacuvaj));
+                intent.putExtra("zaDesni", getText(R.string.obrisi));
                 Log.d("Poslat", ""+position);
                 Task task = (Task) adapter.getItem(position);
                 Log.d("Poslat2", task.getmText1());
-               intent.putExtra("result", (Serializable) task );
-               startActivityForResult(intent, 2);
-             //   Log.d("Sta god", "dugi klik");
-              //  startActivity(intent);
+                intent.putExtra("result", (Serializable) task );
+                startActivityForResult(intent, 2);
+                //   Log.d("Sta god", "dugi klik");
+                //  startActivity(intent);
 
 
                 return true;
@@ -98,17 +105,17 @@ public class MainActivity extends AppCompatActivity {
 
     //   Intent intent = this.getIntent();
 
-        // intent.getIntExtra("prioritet",prioritet);
-      //   text1 = intent.getStringExtra("nazivZadatka");
-       //  text2 = intent.getStringExtra("datum");
-       //  gotovTask = intent.getBooleanExtra("podsjetnik", false);
-        // novTask = intent.getIntExtra("novTask",0);
+    // intent.getIntExtra("prioritet",prioritet);
+    //   text1 = intent.getStringExtra("nazivZadatka");
+    //  text2 = intent.getStringExtra("datum");
+    //  gotovTask = intent.getBooleanExtra("podsjetnik", false);
+    // novTask = intent.getIntExtra("novTask",0);
 
-     //   if(novTask!=0) {
-      //        adapter.addTask(new Task(prioritet, text1, text2, gotovTask));
-      //  }
+    //   if(novTask!=0) {
+    //        adapter.addTask(new Task(prioritet, text1, text2, gotovTask));
+    //  }
 
-   // }
+    // }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -117,6 +124,11 @@ public class MainActivity extends AppCompatActivity {
             if(resultCode == Activity.RESULT_OK){
                 Task t = (Task)data.getSerializableExtra("result");
                 adapter.addTask(t);
+                try {
+                    mBinderInterface.notifyAdd();
+                } catch (RemoteException e) {
+                    e.printStackTrace();
+                }
             }
             if (resultCode == Activity.RESULT_CANCELED) {
                 //Write your code if there's no result
@@ -148,8 +160,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public static TaskAdapter getTaskAdapter(){
-            return adapter;
-        }
+        return adapter;
+    }
 
 
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+        mBinderInterface = AidlInterface.Stub.asInterface(service);
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+
+    }
 }
